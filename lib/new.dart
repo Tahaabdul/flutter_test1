@@ -2,14 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart';
-import 'api_key.dart';
 
 
-import 'package:provider/provider.dart';
-import 'package:flutter_test1/geo_service.dart';
-import 'package:flutter_test1/tabs1.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 // Center of the Google Map
 const initialPosition = LatLng(37.7786, -122.4375);
 // Hue used by the Google Map Markers to match the theme
@@ -53,7 +47,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _iceCreamStores = Firestore.instance
         .collection('iceCream')
-        .orderBy('name')
         .snapshots();
   }
 
