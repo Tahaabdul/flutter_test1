@@ -5,6 +5,7 @@ import 'package:flutter_test1/home_signin_widget.dart';
 import 'package:flutter_test1/tabs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// ignore: must_be_immutable
 class MenuFrame extends StatelessWidget{
   PageController pageController =  PageController();
   Duration _animationDuration = Duration(milliseconds: 500);

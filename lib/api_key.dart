@@ -1,0 +1,1 @@
+const googleMapsApiKey = '[YOUR API KEY HERE]';

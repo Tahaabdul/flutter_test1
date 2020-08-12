@@ -25,7 +25,7 @@ class MapPageState extends State<MapPage> {
 
   void setCustomMapPin() async {
     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
+        ImageConfiguration(),
         'assets/store.png');
   }
 
