@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 
 // Center of the Google Map
@@ -14,8 +17,9 @@ const _pinkHue = 350.0;
 void main() => runApp(App());
 
 class App extends StatelessWidget {
-  @override
+   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Ice Creams FTW',
       home: const HomePage(title: 'Ice Cream Stores in SF'),
@@ -53,9 +57,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _iceCreamStores,
         builder: (context, snapshot) {
@@ -199,8 +200,8 @@ class _StoreListTileState extends State<StoreListTile> {
       title: Text(widget.document['name'] as String),
       subtitle: Text(widget.document['address'] as String),
       leading: Container(
-          width: 100,
-          height: 100,
+          width: 70,
+          height: 80,
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(2)),
             child: Image.asset('assets/store.png', fit: BoxFit.cover),
@@ -239,28 +240,38 @@ class StoreMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
-      initialCameraPosition: CameraPosition(
-        target: initialPosition,
-        zoom: 12,
+    final currentPosition = Provider.of<Position>(context);
+    return Scaffold(
+      body: (currentPosition != null) ? Column(
+      children: <Widget>[
+        Expanded(
+      child: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: LatLng(currentPosition.latitude, currentPosition.longitude),
+          zoom: 12,
+        ),
+        myLocationEnabled: true,
+        markers: documents
+            .map((document) => Marker(
+          markerId: MarkerId(document['placeId'] as String),
+          icon: BitmapDescriptor.defaultMarkerWithHue(_pinkHue),
+          position: LatLng(
+            document['location'].latitude as double,
+            document['location'].longitude as double,
+          ),
+          infoWindow: InfoWindow(
+            title: document['name'] as String,
+            snippet: document['address'] as String,
+          ),
+        ))
+            .toSet(),
+        onMapCreated: (mapController) {
+          this.mapController.complete(mapController);
+        },
       ),
-      markers: documents
-          .map((document) => Marker(
-        markerId: MarkerId(document['placeId'] as String),
-        icon: BitmapDescriptor.defaultMarkerWithHue(_pinkHue),
-        position: LatLng(
-          document['location'].latitude as double,
-          document['location'].longitude as double,
-        ),
-        infoWindow: InfoWindow(
-          title: document['name'] as String,
-          snippet: document['address'] as String,
-        ),
-      ))
-          .toSet(),
-      onMapCreated: (mapController) {
-        this.mapController.complete(mapController);
-      },
-    );
+    )
+    ]
+      )
+   : SpinKitRipple(color: Colors.black, size: 200), );
   }
 }
