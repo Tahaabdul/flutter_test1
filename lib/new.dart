@@ -21,6 +21,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Ice Creams FTW',
       home: const HomePage(title: 'Ice Cream Stores in SF'),
       theme: ThemeData(

@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_test1/dashboard.dart';
 import 'package:flutter_test1/new.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +14,14 @@ void main() {
   runApp(TabBarDemo());
 }
 
+// ignore: must_be_immutable
 class TabBarDemo extends StatelessWidget {
   final locatorService = GeoService();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseUser user;
+
+
   @override
   Widget build(BuildContext context) {
     return FutureProvider(
@@ -22,20 +32,49 @@ class TabBarDemo extends StatelessWidget {
           length: 3,
           child: Scaffold(
             appBar: AppBar(
+              actions: [
+                IconButton(icon: Icon(FontAwesomeIcons.doorOpen), onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                        title: Text(""),
+                        content: Text("Do You Wish to sign out"),
+                        actions: [
+                          FlatButton(
+                            child: Text("YES"),
+                            onPressed: () {
+                              Navigator.popUntil(context, ModalRoute.withName("/"));
+                            },
+                          ),
+                          FlatButton(
+                            child: Text("NO"),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ]),
+                    barrierDismissible: false,
+                  );
+                })
+              ],
               bottom: TabBar(
                 tabs: [
-                  Tab(icon: Icon(Icons.location_on)),
-                  Tab(icon: Icon(Icons.directions_transit)),
-                  Tab(icon: Icon(Icons.directions_bike)),
+                  Tab(icon: Icon(Icons.home),
+                  text: 'Home',),
+                  Tab(icon: Icon(FontAwesomeIcons.bus),
+                  text:'Route Activity'),
+                  Tab(icon: Icon(FontAwesomeIcons.cartArrowDown),
+                  text:'Customer View'),
                 ],
               ),
               title: Text('ViewSm'),
             ),
+
             body: TabBarView(
               children: [
-                MapPage(),
-                Icon(Icons.directions_bike),
+                Dashboard(),
                 App(),
+                MapPage(),
               ],
             ),
           ),
@@ -43,6 +82,8 @@ class TabBarDemo extends StatelessWidget {
       ),
     );
   }
+
+  
 }
 
 class MyHomepage extends StatefulWidget {
@@ -57,22 +98,23 @@ class _MyHomePageState extends State<MyHomepage> {
   Position position;
   Widget _child;
 
-//  function to call at run time
-  void initState() {
-    getCurrentLocation();
-    super.initState();
-  }
 
-  void getCurrentLocation() async {
-    Position res = await Geolocator().getCurrentPosition();
-    setState(() {
-      position = res;
-//        _lat = position.latitude;
-//        _lng = position.longitude
-      _child = mapWidget();
-    });
-//      await getAddres(_lat, _lng);
-  }
+////  function to call at run time
+//  void initState() {
+//    getCurrentLocation();
+//    super.initState();
+//  }
+//
+//  void getCurrentLocation() async {
+//    Position res = await Geolocator().getCurrentPosition();
+//    setState(() {
+//      position = res;
+////        _lat = position.latitude;
+////        _lng = position.longitude
+//      _child = mapWidget();
+//    });
+////      await getAddres(_lat, _lng);
+//  }
 
 //Main app return
   @override
@@ -86,35 +128,6 @@ class _MyHomePageState extends State<MyHomepage> {
     );
   }
 
-// set a marker
-  Set<Marker> _createMarker() {
-    return <Marker>[
-      Marker(
-        markerId: MarkerId("home"),
-        position: LatLng(position.latitude, position.longitude),
-        icon: BitmapDescriptor.defaultMarker,
-        infoWindow: InfoWindow(title: "Home"),
-      ),
-    ].toSet();
+//
   }
 
-//create a map widget to display
-  Widget mapWidget() {
-    return Scaffold(
-        body: Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 2,
-      child: GoogleMap(
-          mapType: MapType.hybrid,
-          markers: _createMarker(),
-          initialCameraPosition: CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
-            zoom: 16.0,
-          ),
-          onMapCreated: (GoogleMapController controller) {
-            _controller = controller;
-          },
-          zoomGesturesEnabled: true),
-    ));
-  }
-}

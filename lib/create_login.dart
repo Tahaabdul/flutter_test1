@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_test1/dashboard.dart';
 import 'package:flutter_test1/tabs.dart';
 
 
@@ -26,7 +27,7 @@ class _CreateLoginState extends State<CreateLogin> {
         .then((authResult) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) =>
-              TabBarDemo()
+              TabBarDemo(),
           )
       );
     }).catchError((err) {

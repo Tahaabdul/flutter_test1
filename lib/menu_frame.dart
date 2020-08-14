@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test1/create_login.dart';
+import 'package:flutter_test1/models/intro.dart';
 import 'package:flutter_test1/sign_in.dart';
 import 'package:flutter_test1/home_signin_widget.dart';
 import 'package:flutter_test1/tabs.dart';
@@ -70,6 +71,11 @@ class MenuFrame extends StatelessWidget{
                 physics: NeverScrollableScrollPhysics(),
                 controller: pageController,
                 children: <Widget>[
+//                  Intro(
+//                    goToHome:(){
+//                      _changePage(0);
+//                    }
+//                  ),
                   HomeSignInWidget(
                     goToSignIn: (){
                       _changePage(1);
