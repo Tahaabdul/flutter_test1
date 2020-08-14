@@ -74,7 +74,7 @@ class TabBarDemo extends StatelessWidget {
               children: [
                 Dashboard(),
                 App(),
-                MapPage(),
+                StoreList(),
               ],
             ),
           ),
