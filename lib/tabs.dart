@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test1/dashboard.dart';
@@ -18,8 +17,7 @@ void main() {
 class TabBarDemo extends StatelessWidget {
   final locatorService = GeoService();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseUser user;
+
 
 
   @override
@@ -116,18 +114,21 @@ class _MyHomePageState extends State<MyHomepage> {
 ////      await getAddres(_lat, _lng);
 //  }
 
-//Main app return
-  @override
-  Widget build(BuildContext context) {
-    final currentPosition = Provider.of<Position>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ViewSm'),
+//Main app return@override
+Widget build(BuildContext context) {
+  return new WillPopScope(
+    onWillPop: () async => false,
+    child: new Scaffold(
+      appBar: new AppBar(
+        title: new Text("data"),
+        leading: new IconButton(
+          icon: new Icon(Icons.ac_unit),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
-      body: _child,
-    );
-  }
-
+    ),
+  );
+}
 //
   }
 

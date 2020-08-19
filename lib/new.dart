@@ -14,7 +14,6 @@ const _pinkHue = 350.0;
 // Places API client used for Place Photos
 //final _placesApiClient = GoogleMapsPlaces(apiKey: googleMapsApiKey);
 
-void main() => runApp(App());
 
 class App extends StatelessWidget {
    @override
@@ -22,20 +21,13 @@ class App extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Ice Creams FTW',
-      home: const HomePage(title: 'Ice Cream Stores in SF'),
-      theme: ThemeData(
-        primarySwatch: Colors.pink,
-        scaffoldBackgroundColor: Colors.pink[50],
-      ),
+      home: HomePage(),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({@required this.title});
 
-  final String title;
 
   @override
   State<StatefulWidget> createState() {
